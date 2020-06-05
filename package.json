@@ -1,0 +1,25 @@
+{
+  "name": "search-helper",
+  "version": "1.0.0",
+  "description": "search on your list(array) easily with string or object ",
+  "main": "search-helper.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emrejz/search-helper.git"
+  },
+  "keywords": [
+    "searh",
+    "array",
+    "list",
+    "filter"
+  ],
+  "author": "emre kayacan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emrejz/search-helper/issues"
+  },
+  "homepage": "https://github.com/emrejz/search-helper#readme"
+}
