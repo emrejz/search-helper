@@ -66,4 +66,4 @@ function searchHelper(array, keys, options = {}) {
   }
 }
 
-module.exports.searchHelper = searchHelper;
+module.exports = searchHelper;
