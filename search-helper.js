@@ -3,10 +3,17 @@ let tempPaths = [];
 let tempObj = [];
 let paths = [];
 
-function isNoObject() {
-  return typeof filterCond != "object";
+function isValidCondition() {
+  return (
+    (typeof filterCond == "object" ||
+      typeof filterCond == "number" ||
+      typeof filterCond == "string") &&
+    !Array.isArray(filterCond)
+  );
 }
-
+function isNoObjCondition() {
+  return typeof filterCond == "number" || typeof filterCond == "string";
+}
 function findObjKeys(obj) {
   const keys = Object.keys(obj);
   for (let index = 0; index < keys.length; index++) {
@@ -25,21 +32,21 @@ function findObjKeys(obj) {
 }
 
 function filteredItem(item, paths, strict) {
-  let final = true;
-  let isStr = isNoObject();
+  let isValidItem = true;
+  let isNoObjCond = isNoObjCondition();
   for (let i = 0; i < paths.length; i++) {
     let element = item;
     let filter = filterCond;
     for (let j = 0; j < paths[i].length; j++) {
       element = element[paths[i][j]];
-      filter = isStr ? filter : filter[paths[i][j]];
+      filter = isNoObjCond ? filter : filter[paths[i][j]];
       if (filter != null) {
         if (j == paths[i].length - 1) {
           if (strict) {
-            final = final * (element == filter);
+            isValidItem = isValidItem * (element == filter);
           } else {
-            final = element == filter;
-            if (final) {
+            isValidItem = element == filter;
+            if (isValidItem) {
               return true;
             }
           }
@@ -47,18 +54,24 @@ function filteredItem(item, paths, strict) {
       }
     }
   }
-  return final;
+  return isValidItem;
 }
 
-function searchHelper(array, keys, options = {}) {
-  filterCond = keys;
-  const isStr = isNoObject();
-  if (options.strict == undefined) options.strict = true;
+function searchHelper(array, condition, options = {}) {
+  filterCond = condition;
+  if (!isValidCondition()) {
+    throw new Error("Condition must be string, number or object");
+  }
+  if (options.strict == undefined) {
+    options.strict = true;
+  }
   let { strict } = options;
-  if (typeof strict != "boolean")
+  if (typeof strict != "boolean") {
     throw new Error("Strict option must be boolean");
-  isStr ? (strict = false) : strict;
-  findObjKeys(isStr ? array[0] : keys);
+  }
+  const isNoObjCond = isNoObjCondition();
+  isNoObjCond ? (strict = false) : strict;
+  findObjKeys(isNoObjCond ? array[0] : condition);
   if (Array.isArray(array)) {
     return array.filter((item) => filteredItem(item, paths, strict));
   } else {

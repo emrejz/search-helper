@@ -15,8 +15,8 @@ const searchHelper = require("search-helper");
 const filteredList = searchHelper(array,condition,options)
 
 array => must be a list of objects
-condition => must be a string or an object
-options => must be an object and and have one parameter(strict)
+condition => must be string, number or object
+options => must be an object and have one parameter(strict)
 ```
 
 ### Options
